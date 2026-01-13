@@ -7,25 +7,29 @@ phases:
     commands:
       - echo "Updating pip"
       - pip install --upgrade pip
-
-      - echo "Installing ML dependencies"
       - pip install numpy pandas scikit-learn matplotlib
       - pip install torch pytorch-tabnet
       - pip install jupyter nbconvert
 
   build:
     commands:
-      - echo "Running all TabNet notebooks"
+      - echo "Searching for notebooks..."
       - |
-        for notebook in TabNet/*.ipynb; do
-          echo "Executing $notebook"
+        NOTEBOOKS=$(find TabNet -name "*.ipynb")
+        if [ -z "$NOTEBOOKS" ]; then
+          echo "❌ No Jupyter notebooks found in TabNet/"
+          exit 1
+        fi
+
+        for notebook in $NOTEBOOKS; do
+          echo "▶ Executing $notebook"
           jupyter nbconvert --to notebook --execute "$notebook" \
           --ExecutePreprocessor.timeout=900 || exit 1
         done
 
   post_build:
     commands:
-      - echo "CI completed successfully"
+      - echo "✅ CI completed successfully"
 
 artifacts:
   files:
