@@ -17,7 +17,7 @@ phases:
       - |
         NOTEBOOKS=$(find TabNet -name "*.ipynb")
         if [ -z "$NOTEBOOKS" ]; then
-          echo "❌ No Jupyter notebooks found in TabNet/"
+          echo " No Jupyter notebooks found in TabNet/"
           exit 1
         fi
 
@@ -29,7 +29,7 @@ phases:
 
   post_build:
     commands:
-      - echo "✅ CI completed successfully"
+      - echo "CI completed successfully"
 
 artifacts:
   files:
