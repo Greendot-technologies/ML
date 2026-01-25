@@ -1,0 +1,34 @@
+version: 0.2
+
+phases:
+  install:
+    runtime-versions:
+      python: 3.9
+    commands:
+      - echo "Entering TabNet directory"
+      - cd TabNet
+      - python --version
+      - pip install --upgrade pip
+
+      # If requirements.txt exists, install it
+      - |
+        if [ -f requirements.txt ]; then
+          pip install -r requirements.txt
+        else
+          echo "No requirements.txt found"
+        fi
+
+  build:
+    commands:
+      - echo "Running basic sanity checks"
+      - python -c "import sys; print('Python OK')"
+
+      # Optional: check main files import correctly
+      - |
+        if [ -f train.py ]; then
+          python -c "import train; print('train.py import OK')"
+        fi
+
+cache:
+  paths:
+    - /root/.cache/pip/**/*
